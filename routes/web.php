@@ -20,3 +20,9 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::resource('home','HomeController');
+// Route::resource('todo','TodosController');
+Route::get('todo/index/{id}','TodosController@index');
+Route::get('todo/create/{id}','TodosController@create');
+Route::post('todo/store/','TodosController@store');
+Route::get('todo/edit/{id_todos}','TodosController@edit');
+Route::post('todo/update/{id_todos}','TodosController@update');

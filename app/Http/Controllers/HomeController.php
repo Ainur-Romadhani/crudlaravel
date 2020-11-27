@@ -74,7 +74,7 @@ class HomeController extends Controller
     public function show($id)
     {
            $user = User::findOrFail($id);
-        return view('user.detail',compact('user'));
+        return view('user.todolist',compact('user'));
     }
 
     /**

@@ -2,24 +2,29 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\User;
-
-class UserController extends Controller
+use App\Todo;
+use DB;
+class TodosController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function __construct(){
 
-        $this->midleware('auth');
-    }
-    public function index()
+    public function __construct()
     {
-         $user = User::all();
-        return view('home' ,compact('user'));
+        $this->middleware('auth');
+    }
+
+    public function index($id)
+    {
+        $user = User::findOrFail($id);
+        $list = Todo::all();
+        return view('todolist.index',compact('user','list'));
     }
 
     /**
@@ -27,9 +32,10 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create($id)
     {
-        //
+        $user = User::findOrFail($id);
+        return view('todolist.createtodo',compact('user'));
     }
 
     /**
@@ -40,7 +46,10 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->all();
+        $data['create_by'] = Auth::user()->email;
+        $list = Todo::create($data);
+        return redirect('/home');
     }
 
     /**
@@ -51,7 +60,7 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        //
+        
     }
 
     /**
@@ -60,10 +69,11 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($id_todos)
     {
-        $user = findOrFail($id);
-        return view('user/detail');
+        $data = Todo::findOrFail($id_todos);
+        return view('todolist.edittodo',compact('data'));
+
     }
 
     /**
@@ -73,9 +83,13 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $id_todos)
     {
-        //
+        $todo = Todo::findOrFail($id_todos);
+        $data= $request->all();
+        $data['create_by'] = Auth::user()->email;
+        $todo->update($data);
+        return redirect('/home');
     }
 
     /**
