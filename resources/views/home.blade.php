@@ -27,7 +27,7 @@
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
-                        <h6><i class="fas fa-check"></i><b> Success  {{session('success')}}</b></h6>
+                        <h6><i class="fas fa-check"></i><b> Success  {{session('delete')}}</b></h6>
                     </div>
                     @endif
                     <table class="table">
@@ -47,14 +47,30 @@
                           <td>{{$data->email}}</td>
                           <td><a href="{{route ('home.edit',$data->id)  }}" class="btn btn-outline-primary">Edit</a>
                             <a href="/todo/index/{{$data->id}}" class="btn btn-outline-success">To Do List</a>
+                            <button type="button" class="btn btn-outline-danger" data-toggle="modal" data-target="#ModalDelete{{$data->id}}">Hapus</button>
+                          </td>
 
-                            <form action="home/{{ $data->id }}" method="post" class="d-inline">
-                              @method('delete')
-                                @csrf
-                              <button type="submit" class="btn btn-outline-danger">
-                                Hapus
-                            </form>
                         </tr>
+                        <!--  -->
+                        <form action="/home/{{$data->id}}" method="POST" class="remove-record-model">
+                        @method('delete')
+                        @csrf
+                        <div id="ModalDelete{{$data->id}}" class="modal modal-danger fade" tabindex="-1" role="dialog" aria-labelledby="custom-width-modalLabel" aria-hidden="true" style="display: none;">
+                            <div class="modal-dialog" style="width:55%;">
+                                <div class="modal-content">
+                                    <div class="modal-body">
+                                        <h4>Apakah yakin menghapus {{$data->name}}?</h4>
+                                        <input type="hidden", name="applicant_id" id="app_id" value="">
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">Close</button>
+                                        <button type="submit" class="btn btn-danger waves-effect remove-data-from-delete-form">Delete</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        </form>
+                        <!--  -->
                         @endforeach
                       </tbody>
                     </table>

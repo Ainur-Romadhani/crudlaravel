@@ -22,6 +22,7 @@ class CreateTodosTable extends Migration
             $table->string('create_by')->nullable();
             $table->string('update_by')->nullable();
             $table->string('delete_by')->nullable();
+            $table->date('deleted_at')->nullable();
             $table->timestamps();
             $table->bigInteger('user_id')->unsigned();
         });

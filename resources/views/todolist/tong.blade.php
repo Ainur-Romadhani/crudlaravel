@@ -5,10 +5,10 @@
     <div class="row justify-content-center">
         <div class="col-md-">
             <div class="card">
-                <div class="card-header">Todo List {{$user->name}}</div>
+                <div class="card-header">Tong Sampah</div>
                  <div class="card-body">
-                   <a href="/todo/create/{{$user->id}}" class="btn btn-outline-primary">Create Tugas</a>
-                    <a href="/todo/tongsampah/" class="btn btn-outline-danger">Tong sampah</a><br><br>
+                    <a href="/todo/deleteall" class="btn btn-outline-danger">Delete All</a>
+                    <a href="/todo/restoreall" class="btn btn-outline-primary">Restore All</a><br><br>
                     @if (session('status'))
                         <div class="alert alert-success" role="alert">
                             {{ session('status') }}
@@ -38,13 +38,12 @@
                           <th scope="col">Start_Date</th>
                           <th scope="col">End_Date</th>
                           <th scope="col">Progres</th>
-                          <th scope="col">Create BY</th>
-                          <th scope="col">Update_BY</th>
+                          <th scope="col">Delete_BY</th>
                           <th scope="col">Action</th>
                         </tr>
                       </thead>
                       <tbody>
-                       @foreach($list as $data)
+                       @foreach($todo as $data)
                        
                         <tr>
                           <th scope="row">{{$loop->iteration}}</th>
@@ -52,10 +51,9 @@
                           <td>{{$data->start_date}}</td>
                           <td>{{$data->end_date}}</td> 
                           <td><progress value="{{$data->proggress}}" max="100"></progress></td>
-                          <td>{{$data->create_by}}</td>
-                          <td>{{$data->update_by}}</td>
-                          <td><a href="/todo/edit/{{$data->id_todos}}" class="btn btn-outline-primary">Edit</a>
-                            <a href="/todo/softdelete/{{$data->id_todos}}" class="btn btn-outline-danger">Hapus</a></td> 
+                          <td>{{$data->delete_by}}</td>
+                          <td><a href="/todo/restore/{{$data->id_todos}}" class="btn btn-outline-primary">Restore</a>
+                            <a href="/todo/deletepermanent/{{$data->id_todos}}" class="btn btn-outline-danger">Delete</a></td> 
                         </tr>
                         @endforeach
                       </tbody>
