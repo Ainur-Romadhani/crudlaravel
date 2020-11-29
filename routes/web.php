@@ -27,7 +27,7 @@ Route::post('todo/store/','TodosController@store');
 Route::get('todo/edit/{id_todos}','TodosController@edit');
 Route::put('todo/update/{id_todos}','TodosController@update');
 Route::get('todo/softdelete/{id_todos}','TodosController@softdelete');
-Route::get('todo/tongsampah','TodosController@tongsampah');
+Route::get('todo/tongsampah/{id}','TodosController@tongsampah');
 Route::get('todo/restore/{id_todos}','TodosController@restore');
 Route::get('todo/restoreall','TodosController@restoreall');
 Route::get('todo/deletepermanent/{id_todos}','TodosController@deletepermanent');

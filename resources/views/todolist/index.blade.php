@@ -7,8 +7,9 @@
             <div class="card">
                 <div class="card-header">Todo List {{$user->name}}</div>
                  <div class="card-body">
-                   <a href="/todo/create/{{$user->id}}" class="btn btn-outline-primary">Create Tugas</a>
-                    <a href="/todo/tongsampah/" class="btn btn-outline-danger">Tong sampah</a><br><br>
+                   <a href="/todo/create/{{$user->id}}" class="btn btn-outline-success">Create Tugas</a>
+                    <a href="/todo/tongsampah/{{$user->id}}" class="btn btn-outline-danger">Tong sampah</a>
+                    <a href="/home" class="btn btn-outline-primary">Kembali</a><br><br>
                     @if (session('status'))
                         <div class="alert alert-success" role="alert">
                             {{ session('status') }}

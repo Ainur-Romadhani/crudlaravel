@@ -49,9 +49,9 @@ class HomeController extends Controller
     {
 
         $validator = Validator::make($request->all(),[
-            'name' => 'required|:name,name',
-            'email' => 'required:email,email',
-            'password' => 'required|:password,password',
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'password' => ['required', 'string', 'min:8', 'confirmed'],
         ]);
 
         if ($validator->fails()){
@@ -98,10 +98,22 @@ class HomeController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $id = User::findOrFail($id);
+        $user = User::findOrFail($id);
         $data = $request->all();
+        $validator = Validator::make($data, [
+            'name' => 'required|max:255',
+            'email' => 'required|email|max:100|',
+            'password' => 'sometimes|nullable|min:8'
+        ]);
+
+        if ($validator->fails()){
+            return redirect("/home/$id/edit")
+                            ->withErrors($validator)
+                            ->withInput();
+        }
+
         $data['password'] = bcrypt($data['password']);
-        $id->update($data);
+        $user->update($data);
         return redirect('home')->with('success',"Data Berhasil Di Ubah !");
     }
 

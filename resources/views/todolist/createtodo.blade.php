@@ -15,7 +15,7 @@
                             <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Name') }}</label>
 
                             <div class="col-md-6">
-                                <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="" required autocomplete="name" autofocus>
+                                <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" autocomplete="name" autofocus>
 
                                 @error('name')
                                     <span class="invalid-feedback" role="alert">
@@ -29,9 +29,9 @@
                             <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Start_date') }}</label>
 
                             <div class="col-md-6">
-                                <input id="name" type="date" class="form-control @error('name') is-invalid @enderror" name="start_date" value="" required autocomplete="name" autofocus>
+                                <input id="name" type="date" class="form-control @error('start_date') is-invalid @enderror" name="start_date" value="{{old('start_date')}}" autocomplete="name" autofocus>
 
-                                @error('name')
+                                @error('start_date')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
@@ -43,9 +43,9 @@
                             <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('End_date') }}</label>
 
                             <div class="col-md-6">
-                                <input id="name" type="date" class="form-control @error('name') is-invalid @enderror" name="end_date" value="" required autocomplete="name" autofocus>
+                                <input id="name" type="date" class="form-control @error('end_date') is-invalid @enderror" name="end_date" value="{{ old('end_date') }}" autocomplete="name" autofocus>
 
-                                @error('name')
+                                @error('end_date')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
@@ -56,9 +56,9 @@
                             <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Proggress') }}</label>
 
                             <div class="col-md-6">
-                                <input id="name" type="number" class="form-control @error('name') is-invalid @enderror" name="proggress" value="" required autocomplete="name" autofocus>
+                                <input id="name" type="number" class="form-control @error('proggress') is-invalid @enderror" name="proggress" value="{{ old('proggress') }}"  autocomplete="name" autofocus>
 
-                                @error('name')
+                                @error('proggress')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>

@@ -8,12 +8,8 @@
                 <div class="card-header">Tong Sampah</div>
                  <div class="card-body">
                     <a href="/todo/deleteall" class="btn btn-outline-danger">Delete All</a>
-                    <a href="/todo/restoreall" class="btn btn-outline-primary">Restore All</a><br><br>
-                    @if (session('status'))
-                        <div class="alert alert-success" role="alert">
-                            {{ session('status') }}
-                        </div>
-                    @endif 
+                    <a href="/todo/restoreall" class="btn btn-outline-success">Restore All</a>
+                    <a href="/todo/index/{{$iduser->id}}" class="btn btn-outline-primary">Kembali</a><br><br>
                    @if(session('success'))
                     <div class="alert alert-success alert-dismissible" role="alert">
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -27,7 +23,7 @@
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
-                        <h6><i class="fas fa-check"></i><b> Success  {{session('success')}}</b></h6>
+                        <h6><i class="fas fa-check"></i><b>{{session('delete')}}</b></h6>
                     </div>
                     @endif
                 <table class="table">
