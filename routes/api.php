@@ -15,9 +15,11 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::post('loginuser','api\UserController@login');
-Route::post('create','api\UserController@create');
+Route::post('register','api\UserController@Register');
 Route::get('user','api\UserController@index');
 
+Route::get('todo','api\TodoListController@index');
+Route::post('create','api\TodoListController@create');
 // Route::middleware('auth:api')->get('/user', function (Request $request) {
 //     return $request->user();
 // });

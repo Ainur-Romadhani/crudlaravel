@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\User;
 use Validator;
+use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\Hash;
 
 class HomeController extends Controller
 {
@@ -48,6 +50,8 @@ class HomeController extends Controller
     public function store(Request $request)
     {
 
+        $data = $request->all();
+        
         $validator = Validator::make($request->all(),[
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
@@ -59,8 +63,19 @@ class HomeController extends Controller
                             ->withErrors($validator)
                             ->withInput();
         }
-        $data = $request->all();
-        $data['password'] = bcrypt($data['password']);
+       
+        if($request->hasFile('foto')){
+            $foto = $request->file('foto');
+            $ext = $foto->getClientOriginalExtension();
+            if($request->file('foto')->isValid()){
+                $foto_name = date('YmdHis'). ".$ext";
+                $upload_path = 'fotouser';
+                $request->file('foto')->move($upload_path, $foto_name);
+                $data['foto'] = $foto_name;
+            }
+        }
+        $data['password'] = Hash::make($data['password']);
+        
         $user = User::create($data);
         return redirect('home')->with('success',"Data Berhasil Ditambahkan !");
     }
@@ -86,6 +101,28 @@ class HomeController extends Controller
     public function edit($id)
     {
         $user = User::findOrFail($id);
+        $pas = $user->password;
+
+        // if(hash::check('dewi12345',$pas)){
+
+        //     echo "true";
+        // }
+        // else{
+        //     echo "flase";
+        // }
+        // $password = Crypt::decryptString($pas);
+        // dd($password);
+
+        // $hashed = Hash::make('secret');
+        // if (Hash::needsRehash($hashed))
+
+        // $hashed = Hash::needsRehash($pas);
+
+
+        // dd($pas);
+
+        // $end = Crypt::decryptString($pas);
+        
         return view('user.edit',compact('user'));
     }
 
@@ -111,7 +148,16 @@ class HomeController extends Controller
                             ->withErrors($validator)
                             ->withInput();
         }
-
+        if($request->hasFile('foto')){
+            $foto = $request->file('foto');
+            $ext = $foto->getClientOriginalExtension();
+            if($request->file('foto')->isValid()){
+                $foto_name = date('YmdHis'). ".$ext";
+                $upload_path = 'fotouser';
+                $request->file('foto')->move($upload_path, $foto_name);
+                $data['foto'] = $foto_name;
+            }
+        }
         $data['password'] = bcrypt($data['password']);
         $user->update($data);
         return redirect('home')->with('success',"Data Berhasil Di Ubah !");
