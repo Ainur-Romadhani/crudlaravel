@@ -18,70 +18,44 @@ class TodoListController extends Controller
     {
         $data = Todo::all();
         return response()->json($data);
-        // $user = User::where('id',$request->input('id'))->first();
-        // $list = Todo::Where('user_id',$user->id)->get();
-        // $data = Todo::Where('user_id',$user->id)->count();
+        // $data1 = Todo::where('user_id', $request->input('user_id'))->get();
+        // $data = Todo::where('user_id', $request->input('User_id'))->count();
+    
         // if($data == 0){
-        //     return response()->json("Data Tidak Ada",401);
+        //     return response()->json('Data Kosong !!!', 401);
         // }
         // else{
-        // return response()->json($list,200);
+        //     return response()->json($data1, 200) ;
         // }
     }
 
     public function create(Request $request){
 
-        $user = User::where('id',$request->input('id'))->first();
-        $data = $request->all();
-        // $data['user_id']=
-        $todo = Todo::create($data);
-        return response()->json($todo);
+        $todo = Todo::Create([
+            'name'          => $request->input('name'),
+            'start_date'    => $request->input('start_date'),
+            'end_date'      => $request->input('end_date'),
+            'proggress'     => $request->input('proggress'),
+            'user_id'       => $request->input('user_id'),
+            'create_by'     => 'null'
+        ]);
+
+        return response()->json($todo,200);
         
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+  
+    public function update(Request $request)
     {
-        //
-    }
+        $todo = Todo::where('id_todos',$request->input('id_todos'))->update([
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
+            'name'          => $request->input('name'),
+            'start_date'    => $request->input('start_date'),
+            'end_date'      => $request->input('end_date'),
+            'proggress'     => $request->input('proggress'),
+            'update_by'     => 'null'
+        ]);
+        return response()->json($todo,200);
     }
 
     /**
@@ -90,8 +64,64 @@ class TodoListController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        //
+        $todo = Todo::where('id_todos',$request->input('id_todos'));
+        $todo->update([
+            'delete_by' => 'null',
+            ]);
+            $todo->delete();
+
+        return response()->json("berhasil",200);
     }
+
+    public function tongsampah(Request $request){
+        $todo = Todo::onlyTrashed()->where('user_id',$request->input('user_id'))->get();
+        $data = Todo::onlyTrashed()->where('user_id',$request->input('user_id'))->count();
+        if($data == 0){
+            return response()->json("Data tidak di temukan",401);
+        }
+        else{
+            return response()->json($todo,200);
+        }
+        
+    }
+
+    public function todoid(Request $request){
+        $todo = Todo::where('user_id',$request->input('user_id'))->get();
+        $data = Todo::where('user_id',$request->input('user_id'))->count();
+
+        if($data == 0){
+            return response()->json("Data tidak di temukan",401);
+        }
+        else{
+            return response()->json($todo,200);
+        }
+    }
+
+    public function restore(Request $request){
+        $todo = Todo::onlyTrashed()->where('id_todos',$request->input('id_todos'));
+        $todo->restore();
+        return response()->json("berhasil",200);
+    }
+
+    public function deletepermanent(Request $request){
+        $todo = Todo::where('id_todos',$request->input('id_todos'));
+        $todo->forceDelete();
+        return response()->json("data Terhapus Permanent",200);
+    }
+
+    public function deleteall(){
+        $todo = Todo::onlyTrashed();
+        $todo->forceDelete();
+        return response()->json("Berhasil !",200);
+    }
+
+    public function restoreall(){
+        $todo = Todo::onlyTrashed();
+        $todo->restore();
+        return response()->json("Berhasil restore !!",200);
+    }
+
+
 }

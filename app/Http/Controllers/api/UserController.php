@@ -21,8 +21,21 @@ class UserController extends Controller
          
     }
 
+    public function datauser(Request $request){
+        $data1 = User::where('email', $request->input('email'))->get();
+        $data = User::where('email', $request->input('email'))->count();
+    
+        if($data == 0){
+            return response()->json('Data Kosong !!!', 401);
+        }
+        else{
+            return response()->json($data1, 200) ;
+        }
+    }
+
   
     public function login(Request $request){
+
 
         $data= User::where('email', $request->input('email'))->count();
 
@@ -47,7 +60,7 @@ class UserController extends Controller
                         'response' => '200',
                         'message'   => $datauser
                     ];
-                    return response()->json($response,200);
+                    return response()->json($data,200);
                 }
                 else{
                     return response()->json("gagal",401);
